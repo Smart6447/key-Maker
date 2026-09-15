@@ -2,71 +2,195 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Sang Family</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     :root {
       --bg: #090d16;
-      --card: #131b2e;
-      --input: #0a0f1d;
-      --border: #232f48;
+      --card: #121929;
+      --input: #080c16;
+      --border: #1e293b;
       --border-active: #38bdf8;
-      --text: #f8fafc;
+      --text: #f1f5f9;
       --muted: #64748b;
       --primary: #38bdf8;
       --success: #34d399;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); padding: 24px 16px; display: flex; justify-content: center; min-height: 100vh; }
-    .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; margin: auto 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      padding: 12px 14px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: flex-start; /* ฟิกซ์ให้อยู่ชิดขอบบน */
+      min-height: 100vh; 
+    }
+
+    .container { 
+      width: 100%; 
+      max-width: 480px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-top: 4px; /* ชิดขอบบน ไม่ต้องเลื่อนจอเวลาคีย์บอร์ดเด้ง */
+    }
 
     header { text-align: center; }
-    header h1 { font-size: 1.6rem; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+    header h1 { 
+      font-size: 1.25rem; 
+      font-weight: 700; 
+      color: var(--text); 
+      letter-spacing: -0.2px; 
+    }
 
-    /* หมวด 1 - 4 */
-    .profile-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: rgba(255,255,255,0.02); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+    /* แถบเลือกหมวด 1 - 4 */
+    .profile-nav { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 6px; 
+      background: rgba(255,255,255,0.02); 
+      padding: 3px; 
+      border-radius: 10px; 
+      border: 1px solid var(--border); 
+    }
     .tab-btn {
-      padding: 12px 4px; border-radius: 8px; border: none; background: transparent; color: var(--muted);
-      font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      padding: 8px 2px; 
+      border-radius: 7px; 
+      border: none; 
+      background: transparent; 
+      color: var(--muted);
+      font-size: 0.76rem; 
+      font-weight: 600; 
+      cursor: pointer; 
+      transition: all 0.2s; 
+      text-align: center; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis;
     }
-    .tab-btn.active { background: var(--primary); color: #070d19; box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
+    .tab-btn.active { 
+      background: var(--primary); 
+      color: #070d19; 
+      box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25); 
+    }
 
-    /* ช่องกรอกลอยๆ */
+    /* กล่องอินพุต */
     .input-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px;
-      display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      border-radius: 14px; 
+      padding: 14px;
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.45);
     }
-    .field-wrap { position: relative; width: 100%; }
+    
+    .field-wrap { 
+      position: relative; 
+      width: 100%; 
+    }
     
     input[type="text"] {
-      width: 100%; padding: 16px 14px; border-radius: 12px; border: 1.5px solid var(--border);
-      background: var(--input); color: var(--text); font-size: 1.05rem; outline: none; transition: all 0.2s;
-      font-family: "Courier New", monospace;
+      width: 100%; 
+      padding: 12px 10px; 
+      border-radius: 10px; 
+      border: 1.5px solid var(--border);
+      background: var(--input); 
+      color: var(--text); 
+      font-size: 0.92rem; 
+      outline: none; 
+      transition: all 0.2s;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
     }
-    input[type="text"]:focus { border-color: var(--border-active); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15); }
-
-    #pwdInput { padding-right: 76px; color: var(--success); }
-    #hintInput { padding-right: 130px; color: var(--primary); }
-
-    /* ปุ่มลอยในช่อง */
-    .btn-group-inline { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; gap: 6px; }
-    .inline-btn {
-      background: #1e293b; border: 1px solid var(--border); color: var(--muted); border-radius: 8px;
-      padding: 7px 10px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    input[type="text"]:focus { 
+      border-color: var(--border-active); 
+      box-shadow: 0 0 0 2.5px rgba(56, 189, 248, 0.15); 
     }
-    .inline-btn:active { transform: scale(0.92); color: var(--text); border-color: var(--primary); }
 
-    /* แจ้งเตือนสั้น */
+    /* เว้นช่องว่างขวาให้พอดีกับขนาดไอคอนสัญลักษณ์ */
+    #pwdInput { padding-right: 48px; color: var(--success); }
+    #hintInput { padding-right: 86px; color: var(--primary); }
+
+    /* ปุ่มสัญลักษณ์แบบ Compact Icon */
+    .btn-group-inline { 
+      position: absolute; 
+      right: 6px; 
+      top: 50%; 
+      transform: translateY(-50%); 
+      display: flex; 
+      gap: 5px; 
+    }
+    .icon-btn {
+      background: #192237; 
+      border: 1px solid var(--border); 
+      color: var(--muted); 
+      border-radius: 7px;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer; 
+      transition: all 0.2s;
+    }
+    .icon-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .icon-btn:active { 
+      transform: scale(0.92); 
+      color: var(--primary); 
+      border-color: var(--primary); 
+    }
+
+    /* Toast แจ้งเตือนสั้น */
     .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--primary); color: #070d19; padding: 8px 18px; border-radius: 20px; font-size: 0.85rem;
-      font-weight: 700; opacity: 0; transition: all 0.2s ease; pointer-events: none; z-index: 100;
+      position: fixed; 
+      bottom: 20px; 
+      left: 50%; 
+      transform: translateX(-50%) translateY(70px);
+      background: var(--primary); 
+      color: #070d19; 
+      padding: 6px 14px; 
+      border-radius: 16px; 
+      font-size: 0.78rem;
+      font-weight: 600; 
+      opacity: 0; 
+      transition: all 0.2s ease; 
+      pointer-events: none; 
+      z-index: 100;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.show { 
+      transform: translateX(-50%) translateY(0); 
+      opacity: 1; 
+    }
 
-    .standby-box { text-align: center; padding: 48px 16px; color: var(--muted); font-size: 0.95rem; }
+    .standby-box { 
+      text-align: center; 
+      padding: 36px 12px; 
+      color: var(--muted); 
+      font-size: 0.85rem; 
+    }
   </style>
 </head>
 <body>
@@ -90,7 +214,10 @@
     <div class="field-wrap">
       <input type="text" id="pwdInput" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="onPasswordChanged()">
       <div class="btn-group-inline">
-        <button class="inline-btn" onclick="copyValue('pwdInput')">คัดลอก</button>
+        <!-- ไอคอน Copy -->
+        <button class="icon-btn" title="คัดลอก" onclick="copyValue('pwdInput')">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
       </div>
     </div>
 
@@ -98,8 +225,14 @@
     <div class="field-wrap">
       <input type="text" id="hintInput" placeholder="Hint Code" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="onHintChanged()">
       <div class="btn-group-inline">
-        <button class="inline-btn" onclick="document.getElementById('cameraInput').click()">📷 สแกน</button>
-        <button class="inline-btn" onclick="copyValue('hintInput')">คัดลอก</button>
+        <!-- ไอคอน Camera -->
+        <button class="icon-btn" title="สแกนภาพ" onclick="document.getElementById('cameraInput').click()">
+          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </button>
+        <!-- ไอคอน Copy -->
+        <button class="icon-btn" title="คัดลอก" onclick="copyValue('hintInput')">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
       </div>
       <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" onchange="processImage(event)">
     </div>
@@ -298,7 +431,7 @@
     document.getElementById('pwdInput').value = decoded;
   }
 
-  // ล้างข้อมูลทันทีเมื่อพับหน้าจอ สลับแอป หรือปิดแท็บ
+  // ล้างข้อมูลอัตโนมัติเมื่อออกจากหน้าจอ/พับจอ
   function clearAllFields() {
     document.getElementById('pwdInput').value = '';
     document.getElementById('hintInput').value = '';
@@ -322,10 +455,10 @@
     const toast = document.getElementById('toastBox');
     toast.textContent = text;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1600);
+    setTimeout(() => toast.classList.remove('show'), 1500);
   }
 
-  // กล้อง / OCR
+  // กล้อง / สแกน OCR
   async function processImage(event) {
     const file = event.target.files[0];
     if (!file) return;
